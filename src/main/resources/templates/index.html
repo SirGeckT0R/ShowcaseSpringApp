@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+
+<a th:href="@{/login}">Login</a>
+<a th:href="@{/register}">Register</a>
+
+<p th:text="${user.email}"></p>
+
+</body>
+</html>
