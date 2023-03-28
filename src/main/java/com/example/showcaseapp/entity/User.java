@@ -1,9 +1,21 @@
 package com.example.showcaseapp.entity;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Table(name="users")
+@Entity(name="users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "emails", nullable = false, unique = true, length = 45)
     private String email;
+
+    @Column(name = "passwords", nullable = false, length = 45)
     private String password;
 
     public User(String email, String password) {

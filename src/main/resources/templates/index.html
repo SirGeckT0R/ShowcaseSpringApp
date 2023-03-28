@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body>
+<header th:insert="~{/blocks/header :: header}" />
 
 <a th:href="@{/login}">Login</a>
 <a th:href="@{/register}">Register</a>
-
-<p th:text="${user.email}"></p>
 
 </body>
 </html>

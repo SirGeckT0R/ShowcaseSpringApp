@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{/blocks/header :: header}" />
+<table class="users-list">
+  <tr>
+    <th>Email
+    </th>
+    <th>Password</th>
+  </tr>
+  <tr class="user-card" th:each="user : ${users}">
+    <td class="border-solid border-2 border-sky-500" th:text="${user.email}"></td>
+    <td class="text-center border-solid border-2 border-sky-500" th:text="${user.password}"></td>
+  </tr>
+</table>
+</body>
+</html>
