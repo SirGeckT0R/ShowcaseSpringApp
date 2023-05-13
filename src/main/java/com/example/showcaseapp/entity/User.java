@@ -26,11 +26,13 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.role = new Role("user");
     }
 
     public User() {
         this.email = "";
         this.password = "";
+        this.role = new Role("user");
     }
 
     public String getEmail() {

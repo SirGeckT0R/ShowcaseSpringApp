@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.net.http.HttpRequest;
-
 @Controller
 public class NavController {
     @GetMapping("/")
@@ -15,10 +13,18 @@ public class NavController {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+        return "redirect:/";
+    }
 
     @GetMapping("/home")
     public String getHomePage(HttpServletRequest request, Model model){
         User user=(User) request.getSession().getAttribute("user");
+        if(user==null){
+            return "redirect:/";
+        }
         model.addAttribute("user", user);
         return "home";
     }
