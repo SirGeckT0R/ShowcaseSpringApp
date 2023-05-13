@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
-public class AuthController {
+public class UsersController {
 
     private UserService userService;
 
-    public AuthController(UserService userService) {
+    public UsersController(UserService userService) {
         this.userService = userService;
     }
 
@@ -50,10 +50,10 @@ public class AuthController {
         }
         return "user";
     }
+
     @GetMapping("users")
     public String getProfile(Model model) {
         model.addAttribute("users", userService.getUsers());
         return "users";
     }
-
 }
