@@ -6,11 +6,10 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-<header th:insert="~{/blocks/header :: header}" />
-<table class="users-list">
+<header th:insert="~{/blocks/headerWithUsers :: header}" />
+<table class="users-list mx-3">
   <tr>
-    <th>Email
-    </th>
+    <th>Email</th>
     <th>Password</th>
   </tr>
   <tr class="user-card" th:each="user : ${users}">

@@ -3,6 +3,7 @@ package com.example.showcaseapp.controller;
 import com.example.showcaseapp.entity.User;
 import com.example.showcaseapp.exception.UserServiceException;
 import com.example.showcaseapp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,14 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public String login(@ModelAttribute User user, Model model) throws UserServiceException {
+    public String login(@ModelAttribute User user, Model model, HttpServletRequest request) throws UserServiceException {
         User candidate = userService.logIn(user.getEmail(), user.getPassword());
         if (candidate == null) {
             return "login";
         }
-        return "user";
+
+        request.getSession().setAttribute("user", candidate);
+        return "home";
     }
 
     @GetMapping("register")
@@ -42,13 +45,15 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public String register(@ModelAttribute User user, Model model) throws UserServiceException {
+    public String register(@ModelAttribute User user, Model model,HttpServletRequest request) throws UserServiceException {
         try {
             userService.registerUser(user);
         } catch (UserServiceException e) {
             throw new UserServiceException(e);
         }
-        return "user";
+
+        request.getSession().setAttribute("user", user);
+        return "home";
     }
     @GetMapping("users")
     public String getProfile(Model model) {

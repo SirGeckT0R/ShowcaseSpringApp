@@ -9,8 +9,8 @@
     />
   </head>
   <body>
-    <header th:insert="~{/blocks/header :: header}" />
-    <h1>Register</h1>
+  <header th:insert="~{/blocks/header :: header}" />
+    <h1 class="font-semibold">Register</h1>
     <form action="#" th:action="@{/register}" th:object="${user}" method="POST">
       <p>
         Email:
