@@ -1,40 +1,27 @@
-package com.example.showcaseapp.entity;
+package com.example.showcaseapp.dto;
 
-import jakarta.persistence.*;
+import com.example.showcaseapp.entity.Role;
 
 import java.util.Objects;
 
-@Table(name="users")
-@Entity(name="users")
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(insertable=false, updatable=false)
     private Long userId;
-
-    @Column(name = "username", nullable = false, unique = true, length = 45)
     private String username;
 
-    @Column(name = "emails", nullable = false, unique = true, length = 45)
     private String email;
 
-    @Column(name = "passwords", nullable = false, length = 60)
-    private String password;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "roleId")
     private Role role;
 
-    public User(String email, String password,String username) {
+    public UserDto(Long id, String email,Role role,String username) {
+        this.userId=id;
         this.email = email;
-        this.password = password;
+        this.role = role;
         this.username=username;
     }
 
-    public User() {
+    public UserDto() {
         this.email = "";
-        this.password = "";
         this.username="";
     }
 
@@ -44,14 +31,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getUsername() {
@@ -87,13 +66,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        UserDto userDto = (UserDto) o;
 
-        if (!Objects.equals(userId, user.userId)) return false;
-        if (!Objects.equals(username, user.username)) return false;
-        if (!Objects.equals(email, user.email)) return false;
-        if (!Objects.equals(password, user.password)) return false;
-        return Objects.equals(role, user.role);
+        if (!Objects.equals(userId, userDto.userId)) return false;
+        if (!Objects.equals(username, userDto.username)) return false;
+        if (!Objects.equals(email, userDto.email)) return false;
+        return Objects.equals(role, userDto.role);
     }
 
     @Override
@@ -101,19 +79,17 @@ public class User {
         int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role.getName() +
+                ", role=" + role +
                 '}';
     }
 }

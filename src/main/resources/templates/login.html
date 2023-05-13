@@ -10,8 +10,9 @@
   </head>
   <body>
     <header th:insert="~{/blocks/header :: header}" />
-    <h1 class="font-semibold">Log in</h1>
-    <form action="#" th:action="@{/login}" th:object="${user}" method="POST">
+    <div class="flex w-full flex-col justify-center items-center">
+    <h1 class="font-semibold text-4xl">Log in</h1>
+    <form class="flex w-1/5 flex-col justify-center mt-3" action="#" th:action="@{/login}" th:object="${user}" method="POST">
       <p>
         Email:
         <input
@@ -30,7 +31,9 @@
           required
         />
       </p>
-      <p><input type="submit" value="Submit" /></p>
+      <p><input class="rounded border-2 border-black-500" type="submit" value="Submit" /></p>
     </form>
+      <p th:text="${errorMessage}"/>
+    </div>
   </body>
 </html>

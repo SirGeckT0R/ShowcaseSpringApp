@@ -1,10 +1,10 @@
 <div th:fragment="header">
-    <div class="container mt-3">
+    <div class="container mt-10">
         <header>
-            <ul>
+            <ul class="flex flex-row gap-10 font-semibold">
                 <li>
-                    <a th:href="@{/home}"  class="hover:underline hover:text-blue-600" aria-current="page">Home</a>
-                    <a th:href="@{/users}" class="hover:underline hover:text-blue-600" aria-current="page">Users</a>
+                    <a th:href="@{/home}"  class="hover:underline hover:text-blue-600 font-semibold text-3xl" aria-current="page">Home</a>
+                    <a th:href="@{/users}" class="hover:underline hover:text-blue-600 font-semibold text-3xl" aria-current="page">Users</a>
                 </li>
             </ul>
         </header>

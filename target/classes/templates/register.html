@@ -10,27 +10,41 @@
   </head>
   <body>
   <header th:insert="~{/blocks/header :: header}" />
-    <h1 class="font-semibold">Register</h1>
-    <form action="#" th:action="@{/register}" th:object="${user}" method="POST">
+  <div class="flex w-full flex-col justify-center items-center">
+    <h1 class="font-semibold text-4xl">Register</h1>
+    <form class="flex w-1/5 flex-col justify-center mt-3" action="#" th:action="@{/register}" th:object="${user}" method="POST">
+      <p>
+        Username:
+        <input
+                class="rounded border-2 border-black-500"
+                type="text"
+                th:field="*{username}"
+                required
+        />
+      </p>
       <p>
         Email:
         <input
-          class="rounded border-2 border-black-500"
-          type="text"
-          th:field="*{email}"
-          required
+                class="rounded border-2 border-black-500"
+                type="text"
+                th:field="*{email}"
+                required
         />
       </p>
       <p>
         Password:
         <input
-          class="rounded border-2 border-black-500"
-          type="password"
-          th:field="*{password}"
-          required
+                class="rounded border-2 border-black-500"
+                type="password"
+                th:field="*{password}"
+                required
         />
       </p>
-      <p><input type="submit" value="Submit" /></p>
+      <p><input
+              class="rounded border-2 border-black-500" type="submit" value="Submit" /></p>
     </form>
+    <p th:text="${errorMessage}"/>
+  </div>
+
   </body>
 </html>

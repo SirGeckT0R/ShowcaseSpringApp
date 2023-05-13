@@ -1,8 +1,11 @@
 package com.example.showcaseapp.service;
 
+import com.example.showcaseapp.dto.UserDto;
 import com.example.showcaseapp.entity.User;
+import com.example.showcaseapp.mapper.UserMapper;
 import com.example.showcaseapp.repository.UserRepository;
 import com.example.showcaseapp.exception.MainException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,43 +25,45 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        Optional<User> candidate=this.userRepository.findByEmail(email);
+        return candidate.isEmpty()?null:candidate.get();
     }
-    public Optional<User> findUserById(Long id) {
-        return this.userRepository.findById(id);
+    public User findUserById(Long id) {
+        Optional<User> candidate=this.userRepository.findById(id);
+        return candidate.isEmpty()?null:candidate.get();
     }
 
-    public User logIn(String email, String password) throws MainException {
-        User candidate = this.findUserByEmail(email);
+    public UserDto logIn(User user) throws MainException {
+        User candidate = findUserByEmail(user.getEmail());
         if (candidate == null) {
-            throw new MainException("User with this data never exist!");
+            throw new MainException("User with this email never existed!");
         }
-        if (Objects.equals(candidate.getPassword(), password)) {
-            return candidate;
+        BCryptPasswordEncoder  encoder=new BCryptPasswordEncoder();
+        if (encoder.matches(user.getPassword(),candidate.getPassword())) {
+            return UserMapper.map(candidate);
         }
-        throw new MainException("Entered data is incorrect!");
+        throw new MainException("Entered password is incorrect!");
     }
 
-    public User registerUser(User user) throws MainException {
-        User candidate = this.findUserByEmail(user.getEmail());
+    public UserDto registerUser(User user) throws MainException {
+        User candidate = findUserByEmail(user.getEmail());
         if (candidate != null) {
-            throw new MainException("User with this email is already exists!");
+            throw new MainException("User with this email already exists!");
         }
         roleService.setUserRole(user);
-        userRepository.save(user);
-        return candidate;
+        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
+        UserDto userDto=UserMapper.map(userRepository.save(user));
+        return userDto;
     }
 
-    public User setAdminRole(Long id)throws MainException{
-        Optional<User> candidate = userRepository.findById(id);
-        if (candidate.isEmpty()) {
-            throw new MainException("User with this data never exist!");
+    public UserDto setAdminRole(Long id)throws MainException{
+        User candidate = findUserById(id);
+        if (candidate == null) {
+            throw new MainException("No user was found!");
         }
-
-        User user = candidate.get();
-        roleService.setAdminRole(user);
-        userRepository.save(user);
-        return user;
-
+        roleService.setAdminRole(candidate);
+        User updatedUser=userRepository.save(candidate);
+        return UserMapper.map(updatedUser);
     }
 }

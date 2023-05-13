@@ -7,9 +7,10 @@
 </head>
 <body>
 <!--<header th:insert="~{/blocks/header :: header}" />-->
-
-<a  class="hover:underline hover:text-blue-600" th:href="@{/login}">Login</a>
-<a  class="hover:underline hover:text-blue-600"  th:href="@{/register}">Register</a>
+<div class="flex flex-row gap-px font-semibold">
+    <a  class="hover:underline hover:text-blue-600 font-semibold text-3xl" th:href="@{/login}">Login</a>
+    <a class="hover:underline hover:text-blue-600 font-semibold text-3xl" th:href="@{/register}">Register</a>
+</div>
 
 </body>
 </html>

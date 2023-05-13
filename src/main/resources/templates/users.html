@@ -7,15 +7,20 @@
 </head>
 <body>
 <header th:insert="~{/blocks/headerWithUsers :: header}" />
-<table class="users-list mx-3">
-  <tr>
-    <th>Email</th>
-    <th>Password</th>
-  </tr>
-  <tr class="user-card" th:each="user : ${users}">
-    <td class="border-solid border-2 border-sky-500" th:text="${user.email}"></td>
-    <td class="text-center border-solid border-2 border-sky-500" th:text="${user.password}"></td>
-  </tr>
-</table>
+
+<div class="flex w-full flex-col justify-center items-center">
+    <table class="users-list mx-3">
+      <tr>
+          <th>Username</th>
+        <th>Email</th>
+        <th>Password</th>
+      </tr>
+      <tr class="user-card" th:each="user : ${users}">
+          <td class="border-solid border-2 border-sky-500" th:text="${user.username}"></td>
+        <td class="border-solid border-2 border-sky-500" th:text="${user.email}"></td>
+        <td class="text-center border-solid border-2 border-sky-500" th:text="${user.password}"></td>
+      </tr>
+    </table>
+</div>
 </body>
 </html>

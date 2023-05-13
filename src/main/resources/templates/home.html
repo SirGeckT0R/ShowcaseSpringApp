@@ -8,11 +8,16 @@
 </head>
 <body>
 <header th:insert="~{/blocks/headerWithUsers :: header}" />
-<h1>User</h1>
-<p th:text="${user.email}"/>
-<p th:text="${user.password}"/>
+<div class="flex w-full flex-col justify-center items-center text-2xl">
+    <h1 class="font-semibold text-4xl">Profile</h1>
+    <p >Username: <span th:text="${user.username}"/></p>
+    <p >Email: <span th:text="${user.email}"/></p>
 
-<a class="hover:underline hover:text-blue-600" href="/home/setAdmin">Set Admin Role</a>
-<a class="hover:underline hover:text-blue-600" href="/logout">Logout</a>
+    <div class="flex flex-row gap-2 font-semibold">
+        <a class="hover:underline hover:text-blue-600" href="/home/setAdmin">Set Admin Role</a>
+        <a class="hover:underline hover:text-blue-600" href="/logout">Logout</a>
+    </div>
+
+</div>
 </body>
 </html>

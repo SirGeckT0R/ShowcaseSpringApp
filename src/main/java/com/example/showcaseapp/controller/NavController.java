@@ -1,5 +1,6 @@
 package com.example.showcaseapp.controller;
 
+import com.example.showcaseapp.dto.UserDto;
 import com.example.showcaseapp.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ public class NavController {
 
     @GetMapping("/home")
     public String getHomePage(HttpServletRequest request, Model model){
-        User user=(User) request.getSession().getAttribute("user");
+        UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user==null){
             return "redirect:/";
         }
