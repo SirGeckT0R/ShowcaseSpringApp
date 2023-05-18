@@ -1,7 +1,9 @@
 package com.example.showcaseapp.dto;
 
+import com.example.showcaseapp.entity.Movie;
 import com.example.showcaseapp.entity.Role;
 
+import java.util.List;
 import java.util.Objects;
 
 public class UserDto {
@@ -12,12 +14,14 @@ public class UserDto {
     private String email;
 
     private Role role;
+    private List<Movie> ratedMovies;
 
-    public UserDto(Long id, String email,Role role,String username) {
+    public UserDto(Long id, String email,Role role,String username,List<Movie> ratedMovies) {
         this.userId=id;
         this.email = email;
         this.role = role;
         this.username=username;
+        this.ratedMovies=ratedMovies;
     }
 
     public UserDto() {
@@ -59,6 +63,13 @@ public class UserDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    public List<Movie> getRatedMovies() {
+        return ratedMovies;
+    }
+
+    public void setRatedMovies(List<Movie> ratedMovies) {
+        this.ratedMovies = ratedMovies;
     }
 
     @Override

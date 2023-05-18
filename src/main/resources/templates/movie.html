@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="movie.title"></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{/blocks/headerWithUsers :: header}" />
+<div class="flex w-full flex-col justify-center items-center text-2xl">
+    <p >Title: <span th:text="${movie.title}"/></p>
+    <p >Description: <span th:text="${movie.description}"/></p>
+    <p >Release Date: <span th:text="${movie.releaseDate}"/></p>
+    <p >Image URL: <span th:text="${movie.imageUrl}"/></p>
+</div>
+</body>
+</html>

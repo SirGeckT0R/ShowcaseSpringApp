@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Creation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{/blocks/headerWithUsers :: header}" />
+<div class="flex w-full flex-col justify-center items-center">
+    <h1 class="font-semibold text-4xl">Create Movie</h1>
+    <form class="flex w-1/5 flex-col justify-center mt-3" action="#" th:action="@{/create_movie}" th:object="${movie}" method="POST">
+        <p>
+            Title:
+            <input
+                    class="rounded border-2 border-black-500"
+                    type="text"
+                    th:field="*{title}"
+                    required
+            />
+        </p>
+        <p>
+            Description:
+            <input
+                    class="rounded border-2 border-black-500"
+                    type="text"
+                    th:field="*{description}"
+                    required
+            />
+        </p>
+        <p>
+            Release Date:
+            <input
+                    class="rounded border-2 border-black-500"
+                    type="date"
+                    th:field="*{releaseDate}"
+                    required
+            />
+        </p>
+        <p>
+            Image Url:
+            <input
+                    class="rounded border-2 border-black-500"
+                    type="text"
+                    th:field="*{imageUrl}"
+                    required
+            />
+        </p>
+        <p><input
+                class="rounded border-2 border-black-500" type="submit" value="Submit" /></p>
+    </form>
+    <p th:text="${errorMessage}"/>
+</div>
+</body>
+</html>

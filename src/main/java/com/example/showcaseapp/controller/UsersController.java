@@ -73,7 +73,7 @@ public class UsersController {
     }
 
     @GetMapping("users")
-    public String getProfile(HttpServletRequest request,Model model) {
+    public String getUsers(HttpServletRequest request,Model model) {
         UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user.hasRole("Admin")){
             model.addAttribute("users", userService.getUsers());

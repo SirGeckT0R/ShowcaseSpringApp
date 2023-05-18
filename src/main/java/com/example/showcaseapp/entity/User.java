@@ -2,6 +2,7 @@ package com.example.showcaseapp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Table(name="users")
@@ -25,6 +26,13 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleId")
     private Role role;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ratedBy",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "movieId"))
+    private List<Movie> ratedMovies;
 
     public User(String email, String password,String username) {
         this.email = email;
@@ -80,6 +88,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Movie> getRatedMovies() {
+        return ratedMovies;
+    }
+
+    public void setRatedMovies(List<Movie> ratedMovies) {
+        this.ratedMovies = ratedMovies;
     }
 
     @Override

@@ -20,6 +20,7 @@ public class NavController {
         return "redirect:/";
     }
 
+
     @GetMapping("/home")
     public String getHomePage(HttpServletRequest request, Model model){
         UserDto user=(UserDto) request.getSession().getAttribute("user");

@@ -10,15 +10,8 @@ import java.util.Objects;
 @Table(name = "roles")
 public class Role {
     @Id
-    @SequenceGenerator(
-            name = "roleSequence",
-            sequenceName = "roleSequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "roleSequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable=false, updatable=false)
     private Long roleId;
 
     @Column(name = "role", updatable = false, nullable = false, unique = true, length = 45)

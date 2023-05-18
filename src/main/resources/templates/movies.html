@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{/blocks/headerWithUsers :: header}" />
+
+<table class="mx-3">
+    <tr>
+        <th>Title</th>
+        <th>Release Year</th>
+        <th>Rating</th>
+    </tr>
+    <tr class="user-card" th:each="movie : ${movies}">
+        <td class="border-solid border-2 border-sky-500" ><a th:text="${movie.title}" th:href="@{/movie/{id}(id=${movie.movieId})}"></a></td>
+        <td class="border-solid border-2 border-sky-500" th:text="${movie.releaseDate}"></td>
+        <td class="text-center border-solid border-2 border-sky-500" th:text="${movie.rating}"></td>
+    </tr>
+</table>
+<div class="flex flex-row gap-2 font-semibold">
+    <a class="hover:underline hover:text-blue-600"  href="/create_movie">Create New Movie</a>
+</div>
+</body>
+</html>
