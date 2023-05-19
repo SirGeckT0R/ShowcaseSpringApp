@@ -2,8 +2,8 @@ package com.example.showcaseapp.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name="users")
 @Entity(name="users")
@@ -27,12 +27,16 @@ public class User {
     @JoinColumn(name = "roleId")
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "ratedBy",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "movieId"))
-    private List<Movie> ratedMovies;
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+   @JoinColumn(name = "ratings",referencedColumnName = "userId")
+    private Set<MovieRating> personalRatings;
+
+//    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "ratedBy",
+//            joinColumns = @JoinColumn(name = "userId"),
+//            inverseJoinColumns = @JoinColumn(name = "movieId"))
+//    private List<Movie> ratedMovies;
 
     public User(String email, String password,String username) {
         this.email = email;
@@ -90,12 +94,22 @@ public class User {
         this.role = role;
     }
 
-    public List<Movie> getRatedMovies() {
-        return ratedMovies;
+    public Set<MovieRating> getPersonalRatings() {
+        return personalRatings;
     }
 
-    public void setRatedMovies(List<Movie> ratedMovies) {
-        this.ratedMovies = ratedMovies;
+    public void setPersonalRatings(Set<MovieRating> movieRatings) {
+        this.personalRatings = movieRatings;
+    }
+
+    public void addPersonalRating(MovieRating movieRating) {
+        if(personalRatings == null) {
+            personalRatings = Set.of(movieRating);
+        }
+        else {
+            personalRatings.add(movieRating);
+
+        }
     }
 
     @Override
@@ -132,4 +146,15 @@ public class User {
                 ", role=" + role.getName() +
                 '}';
     }
+
+    public void addRaiting(Long movieId,float raiting) {
+        if(personalRatings == null) {
+            personalRatings = Set.of(new MovieRating(movieId,userId,raiting));
+        }
+        else {
+            personalRatings.add(new MovieRating(movieId,userId,raiting));
+
+        }
+    }
+
 }

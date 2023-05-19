@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findByTitleIgnoreCase(String title);
-    Optional<List<User>> findUsersByMovieId(Long movieId);
     Optional<Movie> findById(Long id);
 
 }

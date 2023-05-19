@@ -1,27 +1,27 @@
 package com.example.showcaseapp.dto;
 
 import com.example.showcaseapp.entity.Movie;
+import com.example.showcaseapp.entity.MovieRating;
 import com.example.showcaseapp.entity.Role;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class UserDto {
 
     private Long userId;
     private String username;
-
     private String email;
-
     private Role role;
-    private List<Movie> ratedMovies;
+    private Set<MovieRating> personalRatings;
 
-    public UserDto(Long id, String email,Role role,String username,List<Movie> ratedMovies) {
+    public UserDto(Long id, String email,Role role,String username,Set<MovieRating> personalRatings) {
         this.userId=id;
         this.email = email;
         this.role = role;
         this.username=username;
-        this.ratedMovies=ratedMovies;
+        this.personalRatings=personalRatings;
     }
 
     public UserDto() {
@@ -46,7 +46,7 @@ public class UserDto {
     }
 
     public boolean hasRole(String role){
-        return this.role.getName() == role;
+        return this.role.getName().equals(role);
     }
 
     public Long getUserId() {
@@ -64,12 +64,12 @@ public class UserDto {
     public void setRole(Role role) {
         this.role = role;
     }
-    public List<Movie> getRatedMovies() {
-        return ratedMovies;
+    public Set<MovieRating> getPersonalRatings() {
+        return personalRatings;
     }
 
-    public void setRatedMovies(List<Movie> ratedMovies) {
-        this.ratedMovies = ratedMovies;
+    public void setPersonalRatings(Set<MovieRating> personalRatings) {
+        this.personalRatings = personalRatings;
     }
 
     @Override
@@ -82,7 +82,8 @@ public class UserDto {
         if (!Objects.equals(userId, userDto.userId)) return false;
         if (!Objects.equals(username, userDto.username)) return false;
         if (!Objects.equals(email, userDto.email)) return false;
-        return Objects.equals(role, userDto.role);
+        if (!Objects.equals(role, userDto.role)) return false;
+        return Objects.equals(personalRatings, userDto.personalRatings);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class UserDto {
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (personalRatings != null ? personalRatings.hashCode() : 0);
         return result;
     }
 
@@ -101,6 +103,7 @@ public class UserDto {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
+                ", personalRatings=" + personalRatings +
                 '}';
     }
 }

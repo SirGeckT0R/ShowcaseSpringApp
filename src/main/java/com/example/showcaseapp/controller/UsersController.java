@@ -10,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -30,7 +33,7 @@ public class UsersController {
     }
 
     @PostMapping("login")
-    public String login(@ModelAttribute User candidate, HttpServletRequest request,Model model) throws MainException {
+    public String login(@ModelAttribute User candidate, HttpServletRequest request,Model model)  {
         try{
             UserDto user = userService.logIn(candidate);
             request.getSession().setAttribute("user", user);
@@ -76,10 +79,20 @@ public class UsersController {
     public String getUsers(HttpServletRequest request,Model model) {
         UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user.hasRole("Admin")){
-            model.addAttribute("users", userService.getUsers());
+            List<UserDto> users=userService.getUsers().stream().map(user1-> UserMapper.map(user1)).collect(Collectors.toList());
+            model.addAttribute("users", users);
             return "users";
         }else{
             return "redirect:/home";
         }
+    }
+
+    @GetMapping("deleteUser/{id}")
+    public String deleteUser(HttpServletRequest request,Model model,@PathVariable("id") Long userId) {
+        UserDto currentUser=(UserDto) request.getSession().getAttribute("user");
+        if(currentUser.getUserId()!=userId){
+            userService.deleteUser(userId);
+        }
+        return "redirect:/users";
     }
 }

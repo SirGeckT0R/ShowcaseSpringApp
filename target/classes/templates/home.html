@@ -15,12 +15,12 @@
     <table class="mx-3">
         <tr>
             <th>Title</th>
-            <th>Release Year</th>
+            <th>Release Date</th>
             <th>Rating</th>
         </tr>
-        <tr class="user-card" th:each="movie : ${user.ratedMovies}">
-            <td class="border-solid border-2 border-sky-500" th:text="${movie.title}"></td>
-            <td class="border-solid border-2 border-sky-500" th:text="${movie.releaseYear}"></td>
+        <tr class="user-card" th:each="movie : ${movies}">
+            <td class="border-solid border-2 border-sky-500" th:text="${movie}"></td>
+<!--           // <td class="border-solid border-2 border-sky-500" th:text="${movie.releaseDate}"></td>-->
             <td class="text-center border-solid border-2 border-sky-500" th:text="${movie.rating}"></td>
         </tr>
     </table>

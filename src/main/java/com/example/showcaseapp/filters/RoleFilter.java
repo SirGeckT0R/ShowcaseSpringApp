@@ -17,7 +17,6 @@
 //        HttpServletRequest httpRequest = (HttpServletRequest) request;
 //        HttpServletResponse httpResponse = (HttpServletResponse) response;
 //
-//        // TODO: Check actual user state (received from UsersService)
 //
 //        User user = (User) httpRequest.getSession().getAttribute("user");
 //        if(user != null) {
@@ -27,7 +26,7 @@
 //            }
 //        }
 //
-//        // httpResponse.sendRedirect("/");
+//        //httpResponse.sendRedirect("/");
 //        chain.doFilter(request, response);
 //     }
 //}

@@ -13,12 +13,12 @@
       <tr>
           <th>Username</th>
         <th>Email</th>
-        <th>Password</th>
       </tr>
       <tr class="user-card" th:each="user : ${users}">
           <td class="border-solid border-2 border-sky-500" th:text="${user.username}"></td>
         <td class="border-solid border-2 border-sky-500" th:text="${user.email}"></td>
-        <td class="text-center border-solid border-2 border-sky-500" th:text="${user.password}"></td>
+          <td class="border-solid border-2 border-sky-500"><a th:href="@{/deleteUser/{id}(id=${user.userId})}">Delete</a></td>
+<!--          <td class="border-solid border-2 border-sky-500"><a th:href="@{/update/{id}(id=${user.userId})}">Update</a></td>-->
       </tr>
     </table>
 </div>

@@ -1,6 +1,7 @@
 package com.example.showcaseapp.service;
 
 import com.example.showcaseapp.dto.UserDto;
+import com.example.showcaseapp.entity.MovieRating;
 import com.example.showcaseapp.entity.User;
 import com.example.showcaseapp.mapper.UserMapper;
 import com.example.showcaseapp.repository.UserRepository;
@@ -19,6 +20,19 @@ public class UserService {
     public UserService(UserRepository userRepository,RoleService roleService) {this.userRepository = userRepository;
         this.roleService = roleService;}
 
+    public void saveUser(User user) {
+        this.userRepository.save(user);
+    }
+
+    public UserDto updatePersonalRatings(User user, MovieRating movieRating){
+        user.addPersonalRating(movieRating);
+        saveUser(user);
+        return UserMapper.map(user);
+    }
+
+    public void deleteUser(Long id){
+        this.userRepository.deleteById(id);
+    }
     public List<User> getUsers(){
         return this.userRepository.findAll();
     }

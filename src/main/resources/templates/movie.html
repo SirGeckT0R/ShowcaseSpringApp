@@ -12,7 +12,25 @@
     <p >Title: <span th:text="${movie.title}"/></p>
     <p >Description: <span th:text="${movie.description}"/></p>
     <p >Release Date: <span th:text="${movie.releaseDate}"/></p>
-    <p >Image URL: <span th:text="${movie.imageUrl}"/></p>
+    <p >Rating: <span th:text="${movie.rating}"/></p>
+    <p >Number of ratings: <span th:text="${movie.numberOfRatings}"/></p>
+</div>
+
+<div class="flex w-full flex-col justify-center items-center">
+    <form class="flex w-1/5 flex-col justify-center mt-3" action="#" th:action="@{/movie/{id}(id=${movie.movieId})}" th:object="${rating}" method="POST">
+        <p>
+            Your Rating:
+            <input
+                    class="rounded border-2 border-black-500"
+                    type="text"
+                    th:field="*{rating}"
+                    required
+            />
+        </p>
+        <p><input
+                class="rounded border-2 border-black-500" type="submit" value="Submit" /></p>
+    </form>
+    <p th:text="${errorMessage}"/>
 </div>
 </body>
 </html>

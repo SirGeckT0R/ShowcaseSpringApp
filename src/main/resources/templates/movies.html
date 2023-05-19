@@ -18,10 +18,12 @@
         <td class="border-solid border-2 border-sky-500" ><a th:text="${movie.title}" th:href="@{/movie/{id}(id=${movie.movieId})}"></a></td>
         <td class="border-solid border-2 border-sky-500" th:text="${movie.releaseDate}"></td>
         <td class="text-center border-solid border-2 border-sky-500" th:text="${movie.rating}"></td>
+        <td class="border-solid border-2 border-sky-500"><a th:href="@{/deleteMovie/{id}(id=${movie.movieId})}">Delete</a></td>
     </tr>
 </table>
 <div class="flex flex-row gap-2 font-semibold">
     <a class="hover:underline hover:text-blue-600"  href="/create_movie">Create New Movie</a>
 </div>
+<p th:text="${errorMessage}"/>
 </body>
 </html>

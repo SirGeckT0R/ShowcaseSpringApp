@@ -1,9 +1,7 @@
 package com.example.showcaseapp.entity;
 
 import jakarta.persistence.*;
-
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity(name="movies")
 @Table(name="movies")
@@ -20,22 +18,38 @@ public class Movie {
     @Column(name="release_year")
     private String releaseDate;
     @Column(name="rating")
-    private String rating;
-    @Column(name="image_url")
-    private String imageUrl;
+    private float rating;
 
-    @ManyToMany(mappedBy = "ratedMovies")
-    private List<User> users;
+    @Column(name="numberOfRatings")
+    private int numberOfRatings;
+
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<MovieRating> movieRatings;
+
+//    @ManyToMany(mappedBy = "ratedMovies")
+//    private Set<User> users;
 
     public Movie() {
     }
 
-    public Movie(String title, String description, String releaseDate, String rating, String imageUrl) {
+    public Movie(Long movieId, String title, String description, String releaseDate, float rating, int numberOfRatings) {
+        this.movieId = movieId;
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
         this.rating = rating;
-        this.imageUrl = imageUrl;
+        this.numberOfRatings = numberOfRatings;
+    }
+
+    public int getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void increaseNumberOfRatings() {
+        this.numberOfRatings++;
+    }
+    public void decreaseNumberOfRatings() {
+        this.numberOfRatings--;
     }
 
     public Long getMovieId() {
@@ -70,27 +84,50 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public String getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
-
-    public String getImageUrl() {
-        return imageUrl;
+    public void addRating(float rating){
+        this.rating=(this.rating*numberOfRatings+rating)/(numberOfRatings+1);
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setNumberOfRatings(int numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
+//    public String getImageUrl() {
+//        return imageUrl;
+//    }
+//
+//    public void setImageUrl(String imageUrl) {
+//        this.imageUrl = imageUrl;
+//    }
 
-    public List<User> getUsers() {
-        return users;
-    }
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
+//
+//    public void addUser(User user){
+//        this.users.add(user);
+//    }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", rating=" + rating +
+                //", imageUrl='" + imageUrl + '\'' +
+                //", users=" + users.toString() +
+                '}';
     }
 }
