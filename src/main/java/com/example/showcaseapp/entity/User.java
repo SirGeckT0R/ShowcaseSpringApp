@@ -30,14 +30,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
    @JoinColumn(name = "ratings",referencedColumnName = "userId")
     private Set<MovieRating> personalRatings;
-
-//    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "ratedBy",
-//            joinColumns = @JoinColumn(name = "userId"),
-//            inverseJoinColumns = @JoinColumn(name = "movieId"))
-//    private List<Movie> ratedMovies;
-
     public User(String email, String password,String username) {
         this.email = email;
         this.password = password;

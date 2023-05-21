@@ -15,18 +15,18 @@
     <table class="mx-3">
         <tr>
             <th>Title</th>
-            <th>Release Date</th>
-            <th>Rating</th>
+            <th>Your Rating</th>
         </tr>
-        <tr class="user-card" th:each="movie : ${movies}">
-            <td class="border-solid border-2 border-sky-500" th:text="${movie}"></td>
-<!--           // <td class="border-solid border-2 border-sky-500" th:text="${movie.releaseDate}"></td>-->
-            <td class="text-center border-solid border-2 border-sky-500" th:text="${movie.rating}"></td>
+        <tr class="user-card" th:each="movie : ${moviesAndRatings}">
+            <td class="border-solid border-2 border-sky-500">
+                <a  class="hover:underline hover:text-blue-600" th:text="${movie.value.getValue0()}" th:href="@{/movie/{id}(id=${movie.key})}"></a>
+            </td>
+           <td class="border-solid border-2 border-sky-500" th:text="${movie.value.getValue1()}"></td>
         </tr>
     </table>
 
     <div class="flex flex-row gap-2 font-semibold">
-        <a class="hover:underline hover:text-blue-600" href="/home/setAdmin">Set Admin Role</a>
+        <a class="hover:underline hover:text-blue-600" href="/home/setAdmin" th:unless="${user.role.name} == 'Admin'">Set Admin Role</a>
         <a class="hover:underline hover:text-blue-600" href="/logout">Logout</a>
     </div>
 

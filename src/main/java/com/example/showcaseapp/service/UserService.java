@@ -39,11 +39,11 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         Optional<User> candidate=this.userRepository.findByEmail(email);
-        return candidate.isEmpty()?null:candidate.get();
+        return candidate.orElse(null);
     }
     public User findUserById(Long id) {
         Optional<User> candidate=this.userRepository.findById(id);
-        return candidate.isEmpty()?null:candidate.get();
+        return candidate.orElse(null);
     }
 
     public UserDto logIn(User user) throws MainException {
@@ -66,8 +66,7 @@ public class UserService {
         roleService.setUserRole(user);
         BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        UserDto userDto=UserMapper.map(userRepository.save(user));
-        return userDto;
+        return UserMapper.map(userRepository.save(user));
     }
 
     public UserDto setAdminRole(Long id)throws MainException{

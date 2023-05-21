@@ -1,7 +1,6 @@
 package com.example.showcaseapp.entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
 
 @Entity(name="movies")
 @Table(name="movies")
@@ -11,7 +10,7 @@ public class Movie {
     @Column(insertable=false, updatable=false)
     private Long movieId;
 
-    @Column(name="title", nullable = false,unique = true)
+    @Column(name="title", nullable = false)
     private String title;
     @Column(name="description")
     private String description;

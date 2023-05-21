@@ -10,22 +10,19 @@ import java.util.Optional;
 
 @Service
 public class MovieRatingService {
-    private MovieRatingsRepository movieRaitingsRepository;
+    private final MovieRatingsRepository movieRaitingsRepository;
 
     public MovieRatingService(MovieRatingsRepository movieRaitingsRepository) {
         this.movieRaitingsRepository = movieRaitingsRepository;
     }
     public MovieRating getMovieRatingByMovieIdAndUserId(Long movieId,Long userId) throws MainException {
         Optional<MovieRating> movieRating = movieRaitingsRepository.findByMovieIdAndUserId(movieId, userId);
-        if (!movieRating.isPresent()) {
-            return null;
-        }
-        return movieRating.get();
+        return movieRating.orElse(null);
     }
 
     public List<MovieRating> getMovieRatingsByMovieId(Long movieId) throws MainException {
         Optional<List<MovieRating>> movieRatings = movieRaitingsRepository.findByMovieId(movieId);
-        if (!movieRatings.isPresent()) {
+        if (movieRatings.isEmpty()) {
             throw new MainException("Ratings were not found");
         }
         return movieRatings.get();
@@ -33,7 +30,7 @@ public class MovieRatingService {
 
     public List<MovieRating> getMovieRatingsByUserId(Long userId) throws MainException {
         Optional<List<MovieRating>> movieRatings = movieRaitingsRepository.findByUserId(userId);
-        if (!movieRatings.isPresent()) {
+        if (movieRatings.isEmpty()) {
             throw new MainException("Ratings were not found");
         }
         return movieRatings.get();

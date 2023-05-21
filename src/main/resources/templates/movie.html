@@ -12,7 +12,7 @@
     <p >Title: <span th:text="${movie.title}"/></p>
     <p >Description: <span th:text="${movie.description}"/></p>
     <p >Release Date: <span th:text="${movie.releaseDate}"/></p>
-    <p >Rating: <span th:text="${movie.rating}"/></p>
+    <p >Rating: <span th:text="${#numbers.formatDecimal(movie.rating,1,1)}"/></p>
     <p >Number of ratings: <span th:text="${movie.numberOfRatings}"/></p>
 </div>
 

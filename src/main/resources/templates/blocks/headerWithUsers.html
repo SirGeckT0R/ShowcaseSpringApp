@@ -1,11 +1,11 @@
 <div th:fragment="header">
-    <div class="container mt-10">
+    <div class="container w-full mt-10">
         <header>
-            <ul class="flex flex-row gap-10 font-semibold">
+            <ul class="flex flex-row justify-center font-semibold">
                 <li>
-                    <a th:href="@{/home}"  class="hover:underline hover:text-blue-600 font-semibold text-3xl" aria-current="page">Home</a>
-                    <a th:href="@{/users}" class="hover:underline hover:text-blue-600 font-semibold text-3xl" aria-current="page">Users</a>
-                    <a th:href="@{/movies}" class="hover:underline hover:text-blue-600 font-semibold text-3xl" aria-current="page">Movies</a>
+                    <a th:href="@{/home}"  class="hover:underline hover:text-blue-600 font-semibold text-3xl px-5" aria-current="page">Home</a>
+                    <a th:href="@{/users}" class="hover:underline hover:text-blue-600 font-semibold text-3xl px-5" aria-current="page" th:if="${user.role.name} == 'Admin'">Users</a>
+                    <a th:href="@{/movies}" class="hover:underline hover:text-blue-600 font-semibold text-3xl px-5" aria-current="page">Movies</a>
                 </li>
             </ul>
         </header>

@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 @Controller
 public class UsersController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UsersController(UserService userService) {
         this.userService = userService;
@@ -51,7 +52,7 @@ public class UsersController {
     }
 
     @PostMapping("register")
-    public String register(@ModelAttribute User candidate, HttpServletRequest request,Model model) throws MainException {
+    public String register(@ModelAttribute User candidate, HttpServletRequest request,Model model) {
         try {
             UserDto user=userService.registerUser(candidate);
             request.getSession().setAttribute("user", user);
@@ -69,18 +70,18 @@ public class UsersController {
             UserDto userAdmin=userService.setAdminRole(user.getUserId());
 
             request.getSession().setAttribute("user", userAdmin);
-            return "redirect:/users";
         }catch (MainException e){
-            return "redirect:/home";
         }
+        return "redirect:/home";
     }
 
     @GetMapping("users")
     public String getUsers(HttpServletRequest request,Model model) {
         UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user.hasRole("Admin")){
-            List<UserDto> users=userService.getUsers().stream().map(user1-> UserMapper.map(user1)).collect(Collectors.toList());
+            List<UserDto> users=userService.getUsers().stream().map(UserMapper::map).collect(Collectors.toList());
             model.addAttribute("users", users);
+            model.addAttribute("user", user);
             return "users";
         }else{
             return "redirect:/home";
@@ -88,9 +89,9 @@ public class UsersController {
     }
 
     @GetMapping("deleteUser/{id}")
-    public String deleteUser(HttpServletRequest request,Model model,@PathVariable("id") Long userId) {
+    public String deleteUser(HttpServletRequest request,@PathVariable("id") Long userId) {
         UserDto currentUser=(UserDto) request.getSession().getAttribute("user");
-        if(currentUser.getUserId()!=userId){
+        if(!Objects.equals(currentUser.getUserId(), userId)){
             userService.deleteUser(userId);
         }
         return "redirect:/users";

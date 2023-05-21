@@ -5,11 +5,9 @@ import com.example.showcaseapp.entity.Movie;
 import com.example.showcaseapp.entity.MovieRating;
 import com.example.showcaseapp.entity.User;
 import com.example.showcaseapp.exception.MainException;
-import com.example.showcaseapp.mapper.UserMapper;
 import com.example.showcaseapp.service.MovieRatingService;
 import com.example.showcaseapp.service.MovieService;
 import com.example.showcaseapp.service.UserService;
-import com.sun.tools.javac.Main;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class MovieController {
-    private MovieService movieService;
-    private UserService userService;
-    private MovieRatingService movieRatingService;
+    private final MovieService movieService;
+    private final UserService userService;
+    private final MovieRatingService movieRatingService;
 
     public MovieController(MovieService movieService, UserService userService, MovieRatingService movieRatingService) {
         this.movieService = movieService;
@@ -34,28 +31,50 @@ public class MovieController {
     }
 
     @GetMapping("/movies")
-    public String getMovies(Model model) {
+    public String getMovies(Model model,HttpServletRequest request) {
         List<Movie> movies=movieService.getMovies();
         model.addAttribute("movies", movies);
+        model.addAttribute("title", new Title());
+        UserDto user=(UserDto) request.getSession().getAttribute("user");
+        model.addAttribute("user", user);
+        return "movies";
+    }
+
+    @PostMapping("/movies")
+    public String getMovies(@ModelAttribute Title title,Model model,HttpServletRequest request) {
+        try{
+            List<Movie> movies=movieService.findMoviesByTitle(title.getTitle().trim());
+            model.addAttribute("movies", movies);
+        }catch (MainException ex){
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+
+        UserDto user=(UserDto) request.getSession().getAttribute("user");
+        model.addAttribute("user", user);
         return "movies";
     }
     @GetMapping("/movie/{id}")
-    public String getMoviePage(@PathVariable("id") Long movieId,Model model) {
+    public String getMoviePage(@PathVariable("id") Long movieId,Model model,HttpServletRequest request) {
         try{
             Movie movie=movieService.findById(movieId);
             model.addAttribute("movie", movie);
             model.addAttribute("rating", new Rating());
+            UserDto user=(UserDto) request.getSession().getAttribute("user");
+            model.addAttribute("user", user);
         }catch (MainException ex){
-            model.addAttribute("errorMessage", ex.getMessage());
+           return "redirect:/movies";
         }
         return "movie";
     }
 
     @PostMapping("/movie/{id}")
     public String rateMovie(@PathVariable("id") Long movieId, @ModelAttribute("rating") Rating rating, Model model,HttpServletRequest request) {
+        if(rating.getRating()<0 || rating.getRating()>10) {
+            model.addAttribute("errorMessage", "Rating must be between 0 and 10");
+            return "redirect:/movie/"+movieId;
+        }
         try{
             UserDto userRated=(UserDto) request.getSession().getAttribute("user");
-            //MovieRating movieRating=movieRatingService.saveMovieRating(movieId,userRated.getUserId(),rating.getRating());
             MovieRating movieRating = movieRatingService.getMovieRatingByMovieIdAndUserId(movieId, userRated.getUserId());
             MovieRating newMovieRating;
             Movie movie=movieService.findById(movieId);
@@ -72,7 +91,7 @@ public class MovieController {
 
             User user=userService.findUserById(userRated.getUserId());
             request.getSession().setAttribute("user",
-                    userService.updatePersonalRatings(user,movieRating));
+                    userService.updatePersonalRatings(user,newMovieRating));
         }catch (MainException ex){
             model.addAttribute("errorMessage", ex.getMessage());
         }
@@ -82,7 +101,8 @@ public class MovieController {
     public String getCreateMoviePage(Model model,HttpServletRequest request) {
         UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user.hasRole("Admin")){
-            model.addAttribute("movie", new Movie());
+            model.addAttribute("movie", new Movie());;
+            model.addAttribute("user", user);
             return "create_movie";
         }else{
             return "redirect:/movies";
@@ -102,8 +122,34 @@ public class MovieController {
         }
     }
 
+    @GetMapping("/edit_movie/{id}")
+    public String getEditMoviePage(@PathVariable("id") Long id,Model model,HttpServletRequest request) {
+        UserDto user=(UserDto) request.getSession().getAttribute("user");
+        if(user.hasRole("Admin")){
+            Movie movie;
+            try{
+                movie=movieService.findById(id);
+            }catch (MainException ex){
+                return "redirect:/movies";
+            }
+            model.addAttribute("movie", movie);
+            model.addAttribute("user", user);
+            return "edit_movie";
+        }else{
+            return "redirect:/movies";
+        }
+
+
+    }
+
+    @PostMapping("/edit_movie")
+    public String editMovie(@ModelAttribute Movie movie){
+        movieService.saveMovie(movie);
+        return "redirect:/movies";
+    }
+
     @GetMapping("/deleteMovie/{id}")
-    public String deleteMovie(@PathVariable("id") Long id, Model model,HttpServletRequest request) {
+    public String deleteMovie(@PathVariable("id") Long id,HttpServletRequest request) {
         UserDto user=(UserDto) request.getSession().getAttribute("user");
         if(user.hasRole("Admin")){
             movieService.deleteMovie(id);
@@ -113,7 +159,7 @@ public class MovieController {
         }
     }
 
-    private class Rating{
+    private static class Rating{
         private float rating;
 
         public float getRating() {
@@ -122,6 +168,18 @@ public class MovieController {
 
         public void setRating(float rating) throws MainException {
             this.rating = rating;
+        }
+    }
+
+    private static class Title{
+        private String title;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
     }
 }
